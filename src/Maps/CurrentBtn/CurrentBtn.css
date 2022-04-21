@@ -1,0 +1,16 @@
+.crntBtn {
+    width: 35px;
+    height: 35px;
+    background-color: #FFF;
+    border: 1px rgb(200, 200, 200) solid;
+    border-radius: 5px;
+    text-align: center;
+    position: absolute;
+    top: 85%;
+    right: 1%;
+}
+.crntBtnImg {
+    width: 27px;
+    height: 27px;
+    margin-top: 4.5px;
+}
