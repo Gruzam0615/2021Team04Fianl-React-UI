@@ -9,3 +9,8 @@
     background-color: rgb(255, 243, 208);
     z-index: 0;
 }
+
+img, .blueCircle {
+   width: 20px;
+   height: 20px;
+}

@@ -1,4 +1,4 @@
-import { useState, useEffect, forwardRef, useRef } from "react";
+import { useState, useEffect, forwardRef } from "react";
 
 import { CurrentBtn } from "./CurrentBtn/CurrentBtn";
 
@@ -52,58 +52,65 @@ const naverMapsObjectFunc = () => {
     }
 }
 
-let mapElement = null;
-const Maps = forwardRef((props, ref) => {
-    const [ searchResults, setSearchResults ] = useState(props.searchResults);
-    const [ mapEl, setMapEl ] = useState(null);
-    
+let initLat, initLong;
+let initMapElement = null;
+let mapContainer = null;
+
+const Maps = forwardRef((props, ref) => {    
     const script = document.createElement("script");
     const ncpClientId = props.ncpClientId;
     script.setAttribute("src", `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${ncpClientId}&submodules=geocoder`);
     document.body.appendChild(script);
 
-    const mapContainer = ref;
+    // const mapContainer = ref;
+    mapContainer = ref;
    
     const initMap = async() => {
-        let latitude, longitude;
         const userCoords = await getUserCoords();
         const naverMapsObject = naverMapsObjectFunc();
         
         if(userCoords.coords !== undefined) {
-            latitude = userCoords.coords.latitude;
-            longitude = userCoords.coords.longitude;
+            initLat = userCoords.coords.latitude;
+            initLong = userCoords.coords.longitude;
         } else {
-            latitude = 37.359704
-            longitude = 127.105399
+            initLat = 37.359704;
+            initLong = 127.105399
             showAlert(`위치정보 수집이 불가능합니다.\n브라우저의 설정을 확인해주세요.`)
         }        
 
         //Default coordinate       
         const mapOptions = {
-          "center": naverMapsObject.LatLng(latitude, longitude),
+          "center": naverMapsObject.LatLng(initLat, initLong),
           "zoom": 14
         };
-        mapElement = new naverMapsObject.Map(mapContainer.current, mapOptions);
+        initMapElement = new naverMapsObject.Map(mapContainer.current, mapOptions);
     }
 
     const currentLocationMap = async() => {
         let latitude, longitude = 0;
         const userCoords = await getUserCoords();
         const naverMapsObject = naverMapsObjectFunc();
-    
+                   
         if(userCoords.coords !== undefined) {
             latitude = userCoords.coords.latitude;
             longitude = userCoords.coords.longitude;
         } else {
             showAlert(`위치정보 수집이 불가능합니다.\n브라우저의 설정을 확인해주세요.`)
         }
+        mapContainer.current.innerHTML = null;
+        let mapOptions = {
+            "center": new naverMapsObject.LatLng(initLat, initLong),
+            "zoom": 14
+        }
+        initMapElement = new naverMapsObject.Map(mapContainer.current, mapOptions);
+
         let markerOptions = {
             position: new naverMapsObject.LatLng(latitude, longitude),
-            map: mapElement
-        };    
+            map: initMapElement
+        };
         let marker = new naverMapsObject.Marker(markerOptions);
-        // mapElement.setZoom(16, true);       
-        mapElement.panTo(marker.position);
+        // mapElement.setZoom(16, true);   
+        initMapElement.panTo(marker.position);
     }
 
     useEffect(() => {
@@ -121,17 +128,34 @@ const Maps = forwardRef((props, ref) => {
 const SearchLocationMap = (param1) => {
     const naverMapsObject = naverMapsObjectFunc();
     
-    let tempArray1 = [];
-    param1.map(item => {
-        tempArray1.push(naverMapsObject.TransCoord.fromTM128ToLatLng(naverMapsObject.Point(item.mapx, item.mapy)));
+    let locationsArray = [];
+    param1.map(items => {
+        let item = naverMapsObject.TransCoord.fromTM128ToLatLng(naverMapsObject.Point(items.mapx, items.mapy));
+        let data = naverMapsObject.LatLng(item.x, item.y);
+        locationsArray.push(data);
     })
-    let tempPosition = naverMapsObject.LatLng(tempArray1[0].y, tempArray1[0].x);
-    let tempOption = {
-        position: tempPosition,
-        map: mapElement
-    }
     
-    mapElement.panTo(tempPosition);
-    new naverMapsObject.Marker(tempOption);
+    let moveLocation = naverMapsObject.LatLng(locationsArray[0].x, locationsArray[0].y);
+    mapContainer.current.innerHTML = null;
+    let mapOptions = {
+        "center": new naverMapsObject.LatLng(initLat, initLong),
+        "zoom": 14
+    }
+    initMapElement = new naverMapsObject.Map(mapContainer.current, mapOptions);
+    initMapElement.panTo(moveLocation);
+
+    let marker = null;
+    locationsArray.map((items, index) => {
+            marker = new naverMapsObject.Marker({
+            map: initMapElement,
+            position: new naverMapsObject.LatLng(items.x, items.y),
+            icon: {
+                content: `<img src=${blueCircle} id=${index+1} class='blueCircle' draggable='false' unselectable='on'>`,
+                size: naverMapsObject.Size(35, 35),
+                origin: naverMapsObject.Point(0, 0),
+                anchor: naverMapsObject.Point(10,10) 
+            }
+        });
+    })
 }
 export { Maps, SearchLocationMap };
