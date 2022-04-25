@@ -7,4 +7,5 @@
 이번 React UI에서는 Naver 검색 API를 활용해 검색기능을 대처했습니다.<br/>
 
 -------
+패키지 설치 - npm install
 시작 - npm start
