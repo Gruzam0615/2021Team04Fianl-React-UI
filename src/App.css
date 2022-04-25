@@ -1,20 +1,23 @@
-.sideBarBtn {
+.sideBarToggleBtn {
   top: 0;
-  width: 20px;
+  width: 30px;
   height: 100vh;
-  background-color: #c8c8c8;
+  background-color: rgb(50, 50, 50);
+  color: rgb(250, 250, 250);
+  font-weight: bold;
+  border: 0;
   position: absolute;
   text-align: center;
   transition: all 0.5s;
   z-index: 1;
 }
-.sideBarBtn > p {
-  padding-top: 45vh;
+.sideBarToggleBtn > span {
+  padding: 16px 0 16px 0;
+  cursor: pointer;
 }
-#stateTest01 {
-  position: absolute;
-  z-index: 2;
-  top: 80%;
+.sideBarToggleBtn > span:hover {
+  font-weight: bolder;
+  cursor: pointer;
 }
 
 /* .App {

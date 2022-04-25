@@ -1,10 +1,10 @@
-import { useState, useReducer, useEffect } from "react";
+import { useState, useReducer, useEffect, forwardRef, useRef } from "react";
 import { SearchLocationMap } from "../Maps";
 import { ResultItem } from "./ResultItem/ResultItem";
 
 import "./Search.css";
 
-const Search = (props) => {
+const Search = forwardRef((props, ref) => {
     const [ searchInputValue, setSearchInputValue ] = useState("");
     
     const [ searchFetchState, setSearchFetchState ] = useState(false);
@@ -47,8 +47,10 @@ const Search = (props) => {
     const InputEnterPress = (event) => {
         if(event.key === "Enter") {  
             SearchFetch(searchInputValue)
-            .then((data) => { setSearchFetchResults(data) })
-            .then(SearchLocationMap(searchFetchResults))
+            .then((data) => { 
+                setSearchFetchResults(data)
+                SearchLocationMap(data)
+            });
         }       
     }
     // const InputEnterUp = (event) => {
@@ -59,7 +61,7 @@ const Search = (props) => {
     },[]);
 
     return(
-        <div className="search">
+        <div ref={ref} className="search">
             <div className="searchInput">
                 <input id="InputBar" className="InputBar"
                     type="text"
@@ -77,7 +79,7 @@ const Search = (props) => {
             </ul>
         </div>
     );
-} 
+}) 
 export { Search }
 
 /*

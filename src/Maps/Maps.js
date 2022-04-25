@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useReducer } from "react";
+import { useState, useEffect, forwardRef, useRef } from "react";
 
 import { CurrentBtn } from "./CurrentBtn/CurrentBtn";
 
@@ -8,9 +8,9 @@ import blueCircle from "../imgs/blueCircle.png";
 /*
 페이지 새로고침을 하기 위한 함수
 */
-const refreshPage = () => {
-    window.location.reload(false);
-}
+// const refreshPage = () => {
+//     window.location.reload(false);
+// }
 
 const showAlert = (message) => {
     alert(message);
@@ -47,22 +47,23 @@ const naverMapsObjectFunc = () => {
     } catch(err) {
         if(result === undefined) {
             console.log(`Fail to naverMapsObject Loading ${err}`);
-            refreshPage();
+            // refreshPage();
         }
     }
 }
-let mapElement = null;
 
-const Maps = (props) => {
+let mapElement = null;
+const Maps = forwardRef((props, ref) => {
     const [ searchResults, setSearchResults ] = useState(props.searchResults);
+    const [ mapEl, setMapEl ] = useState(null);
     
     const script = document.createElement("script");
     const ncpClientId = props.ncpClientId;
     script.setAttribute("src", `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${ncpClientId}&submodules=geocoder`);
     document.body.appendChild(script);
 
-    const mapContainer = useRef(null);
-
+    const mapContainer = ref;
+   
     const initMap = async() => {
         let latitude, longitude;
         const userCoords = await getUserCoords();
@@ -99,10 +100,9 @@ const Maps = (props) => {
         let markerOptions = {
             position: new naverMapsObject.LatLng(latitude, longitude),
             map: mapElement
-        };
-    
+        };    
         let marker = new naverMapsObject.Marker(markerOptions);
-        // mapElement.setZoom(16, true);
+        // mapElement.setZoom(16, true);       
         mapElement.panTo(marker.position);
     }
 
@@ -116,10 +116,22 @@ const Maps = (props) => {
             <CurrentBtn func1={()=>{currentLocationMap()}}/>
         </div>
     );
-}
+});
 
 const SearchLocationMap = (param1) => {
-    console.log(param1);
-    // naverMapsObject.TransCoord.fromTM128ToLatLng(naverMapsObject.Point(item.mapx, item.mapy))
+    const naverMapsObject = naverMapsObjectFunc();
+    
+    let tempArray1 = [];
+    param1.map(item => {
+        tempArray1.push(naverMapsObject.TransCoord.fromTM128ToLatLng(naverMapsObject.Point(item.mapx, item.mapy)));
+    })
+    let tempPosition = naverMapsObject.LatLng(tempArray1[0].y, tempArray1[0].x);
+    let tempOption = {
+        position: tempPosition,
+        map: mapElement
+    }
+    
+    mapElement.panTo(tempPosition);
+    new naverMapsObject.Marker(tempOption);
 }
 export { Maps, SearchLocationMap };
