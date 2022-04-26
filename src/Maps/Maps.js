@@ -62,9 +62,7 @@ const Maps = forwardRef((props, ref) => {
     script.setAttribute("src", `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${ncpClientId}&submodules=geocoder`);
     document.body.appendChild(script);
 
-    // const mapContainer = ref;
-    mapContainer = ref;
-   
+    mapContainer = ref;   
     const initMap = async() => {
         const userCoords = await getUserCoords();
         const naverMapsObject = naverMapsObjectFunc();
@@ -81,7 +79,12 @@ const Maps = forwardRef((props, ref) => {
         //Default coordinate       
         const mapOptions = {
           "center": naverMapsObject.LatLng(initLat, initLong),
-          "zoom": 14
+          "zoom": 14,
+          "zoomControl": true,
+          "zoomControlOptions": {
+              style: naverMapsObject.ZoomControlStyle.SMALL,
+              position: naverMapsObject.Position.RIGHT_CENTER
+          }
         };
         initMapElement = new naverMapsObject.Map(mapContainer.current, mapOptions);
     }
@@ -100,7 +103,12 @@ const Maps = forwardRef((props, ref) => {
         mapContainer.current.innerHTML = null;
         let mapOptions = {
             "center": new naverMapsObject.LatLng(initLat, initLong),
-            "zoom": 14
+            "zoom": 14,
+            "zoomControl": true,
+            "zoomControlOptions": {
+                style: naverMapsObject.ZoomControlStyle.SMALL,
+                position: naverMapsObject.Position.RIGHT_CENTER
+            }
         }
         initMapElement = new naverMapsObject.Map(mapContainer.current, mapOptions);
 
@@ -136,26 +144,48 @@ const SearchLocationMap = (param1) => {
     })
     
     let moveLocation = naverMapsObject.LatLng(locationsArray[0].x, locationsArray[0].y);
-    mapContainer.current.innerHTML = null;
     let mapOptions = {
         "center": new naverMapsObject.LatLng(initLat, initLong),
-        "zoom": 14
+        "zoom": 14,
+        "zoomControl": true,
+        "zoomControlOptions": {
+            style: naverMapsObject.ZoomControlStyle.SMALL,
+            position: naverMapsObject.Position.RIGHT_CENTER
+        }
     }
+    mapContainer.current.innerHTML = null;
     initMapElement = new naverMapsObject.Map(mapContainer.current, mapOptions);
     initMapElement.panTo(moveLocation);
 
-    let marker = null;
-    locationsArray.map((items, index) => {
-            marker = new naverMapsObject.Marker({
+    for (let i = locationsArray.length-1; i >= 0; i--) {
+    // locationsArray.map((items, index) => {
+            let temp = param1[i];
+            let contentString = [
+                `<div class="iw_inner">
+                    <h3>${temp.title}</h3>
+                `
+            ].join("");
+            let marker = new naverMapsObject.Marker({
             map: initMapElement,
-            position: new naverMapsObject.LatLng(items.x, items.y),
+            position: new naverMapsObject.LatLng(locationsArray[i].x, locationsArray[i].y),
             icon: {
-                content: `<img src=${blueCircle} id=${index+1} class='blueCircle' draggable='false' unselectable='on'>`,
+                content: `<img src=${blueCircle} id=${i} class='blueCircle' draggable='false' unselectable='on'>`,
                 size: naverMapsObject.Size(35, 35),
                 origin: naverMapsObject.Point(0, 0),
                 anchor: naverMapsObject.Point(10,10) 
             }
-        });
-    })
+            });
+            let infowindow = new naverMapsObject.InfoWindow({
+                content: contentString
+            })
+            naverMapsObject.Event.addListener(marker, "click", (event) => {
+                if(infowindow.getMap()) {
+                    infowindow.close()
+                } else {
+                    infowindow.open(initMapElement, marker);
+                }
+            })
+            infowindow.open(initMapElement, marker);
+    }
 }
 export { Maps, SearchLocationMap };
