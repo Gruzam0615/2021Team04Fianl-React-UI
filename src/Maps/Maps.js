@@ -1,5 +1,6 @@
 import { useState, useEffect, forwardRef } from "react";
 
+import LoadingPage from "../LodingPage/LoadingPage";
 import { CurrentBtn } from "./CurrentBtn/CurrentBtn";
 
 import "./Maps.css";
@@ -56,24 +57,28 @@ let initLat, initLong;
 let initMapElement = null;
 let mapContainer = null;
 
-const Maps = forwardRef((props, ref) => {    
+const Maps = forwardRef((props, ref) => {
+    const [ loadingState, setLoadingState ] = useState(false);
     const script = document.createElement("script");
     const ncpClientId = props.ncpClientId;
     script.setAttribute("src", `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${ncpClientId}&submodules=geocoder`);
-    document.body.appendChild(script);
+    document.body.appendChild(script);    
 
     mapContainer = ref;   
     const initMap = async() => {
+        mapContainer.current.innerHTML = null;
         const userCoords = await getUserCoords();
         const naverMapsObject = naverMapsObjectFunc();
         
         if(userCoords.coords !== undefined) {
             initLat = userCoords.coords.latitude;
             initLong = userCoords.coords.longitude;
+            setLoadingState(true);
         } else {
             initLat = 37.359704;
             initLong = 127.105399
             showAlert(`위치정보 수집이 불가능합니다.\n브라우저의 설정을 확인해주세요.`)
+            setLoadingState(true);
         }        
 
         //Default coordinate       
@@ -98,7 +103,7 @@ const Maps = forwardRef((props, ref) => {
             latitude = userCoords.coords.latitude;
             longitude = userCoords.coords.longitude;
         } else {
-            showAlert(`위치정보 수집이 불가능합니다.\n브라우저의 설정을 확인해주세요.`)
+            showAlert(`위치정보 수집이 불가능합니다.\n브라우저의 설정을 확인해주세요.`);
         }
         mapContainer.current.innerHTML = null;
         let mapOptions = {
@@ -124,9 +129,9 @@ const Maps = forwardRef((props, ref) => {
     useEffect(() => {
         initMap();
     })
-    
-    return(        
-        <div>
+    return(       
+        <div className="MapContianer">
+        {loadingState ? null : <LoadingPage/>}
             <div id={"map"} className="Map" ref={mapContainer}></div>
             <CurrentBtn func1={()=>{currentLocationMap()}}/>
         </div>

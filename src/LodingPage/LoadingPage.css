@@ -1,0 +1,11 @@
+.LoadingPage {
+    width: 100%;
+    height: 100vh;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.LoadingPage > h3 {
+    padding-top: 20%;
+    margin: 0;
+}
