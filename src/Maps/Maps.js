@@ -138,7 +138,7 @@ const Maps = forwardRef((props, ref) => {
     );
 });
 
-const SearchLocationMap = (param1) => {
+const SearchLocationMap = (param1, param2) => {
     const naverMapsObject = naverMapsObjectFunc();
     
     let locationsArray = [];
@@ -163,34 +163,44 @@ const SearchLocationMap = (param1) => {
     initMapElement.panTo(moveLocation);
 
     for (let i = locationsArray.length-1; i >= 0; i--) {
-    // locationsArray.map((items, index) => {
-            let temp = param1[i];
-            let contentString = [
-                `<div class="iw_inner">
-                    <h3>${temp.title}</h3>
-                `
-            ].join("");
-            let marker = new naverMapsObject.Marker({
-            map: initMapElement,
-            position: new naverMapsObject.LatLng(locationsArray[i].x, locationsArray[i].y),
-            icon: {
-                content: `<img src=${blueCircle} id=${i} class='blueCircle' draggable='false' unselectable='on'>`,
-                size: naverMapsObject.Size(35, 35),
-                origin: naverMapsObject.Point(0, 0),
-                anchor: naverMapsObject.Point(10,10) 
+        let temp = param1[i];
+        let contentString = [
+            ` 
+                <div class="infoWindow">
+                <h5>${temp.title}</h5>
+            `
+        ].join("");
+        const marker = new naverMapsObject.Marker({
+        map: initMapElement,
+        position: new naverMapsObject.LatLng(locationsArray[i].x, locationsArray[i].y),
+        icon: {
+            content: `<img src=${blueCircle} id=${i} class='blueCircle' draggable='false' unselectable='on'>`,
+            size: naverMapsObject.Size(35, 35),
+            origin: naverMapsObject.Point(0, 0),
+            anchor: naverMapsObject.Point(10,10) 
+        }
+        });
+        const infoWindow = new naverMapsObject.InfoWindow({
+            content: contentString,
+            maxWidth: 100
+        })
+        naverMapsObject.Event.addListener(marker, "click", (event) => {
+            if(infoWindow.getMap()) {
+                infoWindow.close();
+            } else {
+                infoWindow.open(initMapElement, marker);
             }
+        })
+        infoWindow.open(initMapElement, marker);
+        const $infoWindow = document.querySelectorAll(".infoWindow");
+        const $resultSpecific = document.querySelectorAll(".resultSpecific")[0];
+        const $specTitle = document.querySelectorAll(".SpecTitle")[0];
+        for(let i = 0; i < $infoWindow.length; i++) {
+            $infoWindow[i].addEventListener("click", () => {
+                $resultSpecific.style.display = "inline-block";
+                $specTitle.innerHTML = temp.title;
             });
-            let infowindow = new naverMapsObject.InfoWindow({
-                content: contentString
-            })
-            naverMapsObject.Event.addListener(marker, "click", (event) => {
-                if(infowindow.getMap()) {
-                    infowindow.close()
-                } else {
-                    infowindow.open(initMapElement, marker);
-                }
-            })
-            infowindow.open(initMapElement, marker);
+        }
     }
 }
 export { Maps, SearchLocationMap };

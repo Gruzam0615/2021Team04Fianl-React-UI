@@ -6,10 +6,9 @@ const ResultItem = (props) => {
     let title = props.title;
     title = title.replace(/(<([^>]+)>)/ig,"");
     title = title.replace(/&amp;/ig,"");
-
     return(
         <li key={props.index}>
-            {`${title}`}
+            <span>{`${title}`}</span>
         </li>
     );
 }

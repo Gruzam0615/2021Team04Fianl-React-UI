@@ -1,6 +1,7 @@
 import { useState, useReducer, useEffect, forwardRef, useRef } from "react";
 import { SearchLocationMap } from "../Maps";
 import { ResultItem } from "./ResultItem/ResultItem";
+import ResultItemSpec from "./ResultItemSpec/ResultItemSpec";
 
 import "./Search.css";
 
@@ -9,6 +10,12 @@ const Search = forwardRef((props, ref) => {
     
     const [ searchFetchState, setSearchFetchState ] = useState(false);
     const [ searchFetchResults, setSearchFetchResults ] = useState([]);
+
+    const [ searchImageFetchResults, setSearchImageFetchResults ] = useState([]);
+
+    const resultSpecificRef = useRef(null);
+
+    let temp1, temp2 = [];
 
     const SearchFetch = (param) => {
         console.log(`${param} 에 대해 검색시작`);
@@ -27,17 +34,41 @@ const Search = forwardRef((props, ref) => {
             redirect: "follow"
         }
         return fetch(url, fetchOptions)
-                .then(response => response.json())
-                .then(
-                    (data) => {
-                        setSearchFetchState(true);
-                        return data.items;
-                    },
-                    (error) => {
-                        setSearchFetchState(true);
-                        return error;
-                    }
-                )
+            .then(response => response.json())
+            .then(
+                (data) => {
+                    setSearchFetchState(true);
+                    return data.items;
+                },
+                (error) => {
+                    setSearchFetchState(true);
+                    return error;
+                }
+            )
+    }
+    const SearchImageFetch = (param) => {
+        const url = `/v1/search/image?query=${param}&sort=sim`;
+        const CLIENT_ID = "kpYMnsoGe10W_S5naKs0";
+        const CLIENT_SECRET = "YnxERGnITT";
+
+        const options = {
+            method: "GET",
+            headers: {
+                "accept": "application/json",
+                "X-Naver-Client-Id": CLIENT_ID,
+                "X-Naver-Client-Secret": CLIENT_SECRET,
+            }
+        }
+        return fetch(url, options)
+            .then(response => response.json())
+            .then(
+                (data) => {
+                    return data.items;
+                },
+                (error) => {
+                    return error;
+                }
+            )            
     }
     
     const OnSearchInputChnage = (event) => {
@@ -51,6 +82,11 @@ const Search = forwardRef((props, ref) => {
                 setSearchFetchResults(data)
                 SearchLocationMap(data)
             });
+            // SearchImageFetch(searchInputValue)
+            // .then((data) => {
+            //     setSearchImageFetchResults(data)
+            //     SearchLocationMap(searchFetchResults, searchImageFetchResults);
+            // })
         }       
     }
     // const InputEnterUp = (event) => {
@@ -60,6 +96,10 @@ const Search = forwardRef((props, ref) => {
     useEffect(() => {
     },[]);
 
+    const Test01 = () => {
+        resultSpecificRef.current.style.display = "none";
+    }
+    
     return(
         <div ref={ref} className="search">
             <div className="searchInput">
@@ -72,35 +112,20 @@ const Search = forwardRef((props, ref) => {
                 />
             </div>
             <ul className="searchResults">
-                {searchFetchResults ?
-                    searchFetchResults.map((value, index) => <ResultItem index={index} title={value.title} />)
-                    : null
-                }
+            {searchFetchResults ? 
+                searchFetchResults.map((value, index) => <ResultItem index={index} title={value.title} />)
+                : null
+            }
             </ul>
+            {
+            <div ref={resultSpecificRef} className="resultSpecific">
+                <h1 className="SpecTitle"></h1>
+                <div className="SpecButtonDiv">
+                    <button onClick={Test01}>X</button>
+                </div>
+            </div>
+            }
         </div>
     );
 }) 
 export { Search }
-
-/*
-    Naver 웹 검색 API 활용시 https://openapi.naver.com/v1/search/webkr url에 직접 fetch() 요청을할 경우
-    CORS 정책으로 인해 fetch() 요청에 mode: "no-cors"를 설정해도 아래와 같은 사유로 요청이 거절된다.
-    General:
-        Request URL: https://openapi.naver.com/v1/search/webkr.json?query=%EC%84%9C%EC%9A%B8%EC%97%AD
-        Request Method: GET
-        Status Code: 401 
-        Remote Address: 110.93.147.11:443
-        Referrer Policy: strict-origin-when-cross-origin
-    Response Header:
-        {"errorMessage":"Not Exist Client ID : Authentication failed. (인증에 실패했습니다.)","errorCode":"024"}
-    이에 대한 해결책으로 package.json에서 "proxy": "https://openapi.naver.com/" 를 설정하고
-    fetch()를 실행할때 요청 url을 proxy로 설정한 url을 제외한 이하의 url을 입력해 fetch()를 실행한다.
-    const url = `/v1/search/webkr`
-    실행결과는 다음과 같다.
-    General:
-        Rquest URL: http://localhost:3000/v1/search/webkr.json?query=%ED%99%94%EA%B3%A1%EC%97%AD
-        Request Method: GET
-        Status Code: 200 OK
-        Remote Address: 127.0.0.1:3000
-        Referrer Policy: strict-origin-when-cross-origin
-*/

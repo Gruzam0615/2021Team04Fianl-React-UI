@@ -14,3 +14,8 @@ img, .blueCircle {
    width: 20px;
    height: 20px;
 }
+
+.infoWindow {
+    border-radius: 2px;
+    cursor: pointer;
+}

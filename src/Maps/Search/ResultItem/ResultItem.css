@@ -3,8 +3,12 @@ li {
     width: 100%;
     height: 50px;
     padding-top: 30px;
-    padding-left: 10px;
 }
 li:hover {
-    background-color: rgb(190, 190, 190);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: rgba(250, 250, 250, 1);
+}
+
+li > span {
+    padding-left: 10px;
 }
