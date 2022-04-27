@@ -43,3 +43,15 @@
     border: 1px solid rgb(220, 220, 220);
     box-shadow: 1px 1px 1px #ff00002e;
 }
+.resultSpecific > .SpecTitleHeader {
+    text-align: center;
+}
+.resultSpecific > figure {
+    margin: 0;
+    text-align: center;
+}
+.resultSpecific > figure > .SpecThumbnail {
+    background-color: rgba(0,0,0, 0.1);
+    width: 100%;
+    height: 250px;
+}

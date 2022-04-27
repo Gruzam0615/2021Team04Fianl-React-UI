@@ -7,7 +7,7 @@ const ResultItem = (props) => {
     title = title.replace(/(<([^>]+)>)/ig,"");
     title = title.replace(/&amp;/ig,"");
     return(
-        <li key={props.index}>
+        <li key={props.index} onClick={props.func1}>
             <span>{`${title}`}</span>
         </li>
     );

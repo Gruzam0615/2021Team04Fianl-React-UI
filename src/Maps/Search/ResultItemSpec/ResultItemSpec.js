@@ -1,8 +1,21 @@
 const ResultItemSpec = (props) => {
     return(
         <div>
-            <h3 className="SpecTitle">{props.info}</h3>
-            <div className="SpecButtonDiv"><p>X</p></div>
+            <div className="SpecButtonDiv">
+                    <button>X</button>
+                </div>
+                <header>
+                    <h3 className="SpecTitle"></h3>
+                </header>
+                <figure>
+                    <div className="SpecThumbnail"></div>
+                </figure>
+                <summary>
+                    <p className="SpecPhone"></p>
+                </summary>
+                <summary >
+                    <p className="SpecAddress"></p>
+                </summary>
         </div>
     )
 }

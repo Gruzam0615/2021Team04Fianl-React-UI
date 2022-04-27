@@ -193,14 +193,32 @@ const SearchLocationMap = (param1, param2) => {
         })
         infoWindow.open(initMapElement, marker);
         const $infoWindow = document.querySelectorAll(".infoWindow");
-        const $resultSpecific = document.querySelectorAll(".resultSpecific")[0];
-        const $specTitle = document.querySelectorAll(".SpecTitle")[0];
-        for(let i = 0; i < $infoWindow.length; i++) {
-            $infoWindow[i].addEventListener("click", () => {
-                $resultSpecific.style.display = "inline-block";
-                $specTitle.innerHTML = temp.title;
-            });
-        }
+        // const $resultSpecific = document.querySelectorAll(".resultSpecific")[0];
+        // const $specTitle = document.querySelectorAll(".SpecTitle")[0];
+        // for(let i = 0; i < $infoWindow.length; i++) {
+        //     $infoWindow[i].addEventListener("click", () => {
+        //         $resultSpecific.style.display = "inline-block";
+                // $specTitle.innerHTML = temp.title;
+        //     });
+        // }
+        ResultSpecific($infoWindow, temp);
     }
 }
-export { Maps, SearchLocationMap };
+const ResultSpecific = (Object1, Object2) => {
+    const $resultSpecific = document.querySelectorAll(".resultSpecific")[0];
+    const $specTitle = document.querySelectorAll(".SpecTitle")[0];
+    const $specDescription = document.querySelectorAll(".SpecDescription")[0];
+    const $specTelephone = document.querySelectorAll(".SpecTelephone")[0];
+    const $specAddress = document.querySelectorAll(".SpecAddress")[0];
+    for(let i = 0; i < Object1.length; i++) {
+        Object1[i].addEventListener("click", () => {
+            $resultSpecific.style.display = "inline-block";
+            $specTitle.innerHTML = Object2.title;
+            $specDescription.innerHTML = Object2.description;
+            $specTelephone.innerHTML = Object2.telephone;
+            $specAddress.innerHTML = Object2.address;
+        });
+    }
+}
+
+export { Maps, SearchLocationMap, ResultSpecific };

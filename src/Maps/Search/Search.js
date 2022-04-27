@@ -1,5 +1,5 @@
 import { useState, useReducer, useEffect, forwardRef, useRef } from "react";
-import { SearchLocationMap } from "../Maps";
+import { ResultSpecific, SearchLocationMap } from "../Maps";
 import { ResultItem } from "./ResultItem/ResultItem";
 import ResultItemSpec from "./ResultItemSpec/ResultItemSpec";
 
@@ -15,7 +15,6 @@ const Search = forwardRef((props, ref) => {
 
     const resultSpecificRef = useRef(null);
 
-    let temp1, temp2 = [];
 
     const SearchFetch = (param) => {
         console.log(`${param} 에 대해 검색시작`);
@@ -79,8 +78,8 @@ const Search = forwardRef((props, ref) => {
         if(event.key === "Enter") {  
             SearchFetch(searchInputValue)
             .then((data) => { 
-                setSearchFetchResults(data)
-                SearchLocationMap(data)
+                setSearchFetchResults(data);
+                SearchLocationMap(data);
             });
             // SearchImageFetch(searchInputValue)
             // .then((data) => {
@@ -96,10 +95,11 @@ const Search = forwardRef((props, ref) => {
     useEffect(() => {
     },[]);
 
-    const Test01 = () => {
+    const CloseSpecificBtn = () => {
         resultSpecificRef.current.style.display = "none";
     }
-    
+    const Test01 = () => { alert("!!!"); }
+
     return(
         <div ref={ref} className="search">
             <div className="searchInput">
@@ -117,14 +117,26 @@ const Search = forwardRef((props, ref) => {
                 : null
             }
             </ul>
-            {
             <div ref={resultSpecificRef} className="resultSpecific">
-                <h1 className="SpecTitle"></h1>
                 <div className="SpecButtonDiv">
-                    <button onClick={Test01}>X</button>
-                </div>
+                    <button onClick={CloseSpecificBtn}>X</button>
+                </div>                
+                <figure>
+                    <div className="SpecThumbnail">PHOTO</div>
+                </figure>
+                <header className="SpecTitleHeader">
+                    <h3 className="SpecTitle"></h3>
+                </header>
+                <summary>
+                    <p className="SpecDescription"></p>
+                </summary>
+                <summary>
+                    <p className="SpecTelephone"></p>
+                </summary>
+                <summary >
+                    <p className="SpecAddress"></p>
+                </summary>
             </div>
-            }
         </div>
     );
 }) 
