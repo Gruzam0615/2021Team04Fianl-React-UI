@@ -5,18 +5,64 @@
     left: 30px;
     width: 300px;
     height: 100%;
-    background-color: rgb(250, 250, 250);
+    background-color: rgb(255, 255, 255);
     z-index: 1;
 }
 
-.InputBar {
-    width: 98%;
+.searchInput {
+    width: 90%;
     height: 30px;
-    font-size: 20pt;
-    border: 1px rgb(220, 220, 220) solid;
-    border-radius: 3px;
-} 
+    margin: 10px 14px 0 14px;    
+    border: 2px rgb(30, 30, 30) solid;
+    border-radius: 5px;
+    display:inline-flex;
+}
 
+.InputBar {     
+    width: 75%;
+    height: 100%;
+    font-size: 20pt;
+    border: 0;
+    background: none;
+    vertical-align: super;
+}
+.InputBar:focus {
+    outline: none;
+}
+.searchBtn {
+    width: 17.5%;
+    height: 100%;
+    vertical-align: super;
+    background: none;
+    border: 0;
+    background-image: url("../../imgs/glass_icon.png");
+    background-size: 35%;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+}
+
+.clearBtn {
+    margin-top: 1.5%;
+    width: 10.5%;
+    height: 70%;
+    border: 0;
+    font-weight: 500;
+    border-left: 1px solid rgba(0,0,0, 0.1);
+    line-height: 0%;
+    background: none;
+    vertical-align: super;
+    visibility: hidden;
+}
+.clearBtn:hover {
+    color: rgb(200, 0, 0);
+}
+
+.searchResultsDiv {
+    margin-top: 4%;
+    height: 80%;
+    overflow-y: scroll;
+}
 .searchResults {
     padding: 0;
     margin: 0;
@@ -30,19 +76,33 @@
     width: 300px;
     height: 100%;
     background-color: rgb(250, 250, 250);
+    overflow-y: scroll;
 }
 
-.resultSpecific > .SpecButtonDiv {
+.SpecCloseButtonDiv {
     position: absolute;
-    left: 300px;
+    top: 0;
+    left: 600px;
+    visibility: hidden;
 }
-.resultSpecific > .SpecButtonDiv > button {
+.SpecCloseButtonDiv > button {
     width: 28px;
     height: 28px;
     background-color: rgb(250, 250, 250);
     border: 1px solid rgb(220, 220, 220);
-    box-shadow: 1px 1px 1px #ff00002e;
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px rgba(0,0,0, 0.05);
 }
+.SpecCloseButtonDiv > button:hover {
+    width: 28px;
+    height: 28px;
+    background-color: rgb(220, 220, 220);
+    border-top: 1px solid rgb(120, 120, 120);
+    border-right: 1px solid rgb(120, 120, 120);
+    border-bottom: 1px solid rgb(120, 120, 120);
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
+}
+
 .resultSpecific > .SpecTitleHeader {
     text-align: center;
 }

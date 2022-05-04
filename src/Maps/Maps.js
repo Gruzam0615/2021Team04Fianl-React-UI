@@ -138,7 +138,7 @@ const Maps = forwardRef((props, ref) => {
     );
 });
 
-const SearchLocationMap = (param1, param2) => {
+const SearchLocationMap = (param1) => {
     const naverMapsObject = naverMapsObjectFunc();
     
     let locationsArray = [];
@@ -205,6 +205,11 @@ const SearchLocationMap = (param1, param2) => {
     }
 }
 const ResultSpecific = (Object1, Object2) => {
+    /**
+     * Object1 - 지도의 Marker위에 표시되는 모든 infoWindow 객체 배열
+     * Object2 - API 검색결과로 출력되는 지역정보 배열
+     */
+    const $resultSpecificCloseBtn = document.querySelectorAll(".SpecCloseButtonDiv")[0]
     const $resultSpecific = document.querySelectorAll(".resultSpecific")[0];
     const $specTitle = document.querySelectorAll(".SpecTitle")[0];
     const $specDescription = document.querySelectorAll(".SpecDescription")[0];
@@ -212,6 +217,7 @@ const ResultSpecific = (Object1, Object2) => {
     const $specAddress = document.querySelectorAll(".SpecAddress")[0];
     for(let i = 0; i < Object1.length; i++) {
         Object1[i].addEventListener("click", () => {
+            $resultSpecificCloseBtn.style.visibility = "visible";
             $resultSpecific.style.display = "inline-block";
             $specTitle.innerHTML = Object2.title;
             $specDescription.innerHTML = Object2.description;

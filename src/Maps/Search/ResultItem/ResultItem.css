@@ -2,13 +2,14 @@ li {
     list-style: none;
     width: 100%;
     height: 50px;
-    padding-top: 30px;
+    padding: 35px 0 15px 0;
 }
 li:hover {
-    background-color: rgba(0, 0, 0, 0.5);
-    color: rgba(250, 250, 250, 1);
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 li > span {
-    padding-left: 10px;
+    margin-left: 6%;
+    font-weight: bold;
 }
