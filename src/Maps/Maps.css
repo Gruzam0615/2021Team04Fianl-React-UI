@@ -10,10 +10,13 @@
     z-index: 0;
 }
 
-img, .blueCircle {
-   width: 20px;
-   height: 20px;
-}
+.MarkerCircle {
+    width: 15px;
+    height: 15px;
+    border: 2px solid #FFF;
+    background-color: #111;
+    border-radius: 50%;
+ }
 
 .infoWindow {
     border-radius: 2px;

@@ -1,5 +1,5 @@
 import { useState, useReducer, useEffect, forwardRef, useRef } from "react";
-import { ResultSpecific, SearchLocationMap } from "../Maps";
+import { ResultSpecific, SearchLocationMap } from "../Maps/Maps";
 import { ResultItem } from "./ResultItem/ResultItem";
 import ResultItemSpec from "./ResultItemSpec/ResultItemSpec";
 
@@ -106,6 +106,9 @@ const Search = forwardRef((props, ref) => {
     }
     const clearBtnClick = () => {
         setSearchInputValue("");
+        setSearchFetchResults([]);
+        resultSpecificRef.current.style.display = "none";
+        SpecCloseButtonRef.current.style.visibility = "hidden";
         clearBtnRef.current.style.visibility = "hidden";
     }
     useEffect(() => {

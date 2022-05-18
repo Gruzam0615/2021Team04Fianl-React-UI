@@ -1,4 +1,4 @@
-import { useState, useEffect, forwardRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import LoadingPage from "../LodingPage/LoadingPage";
 import { CurrentBtn } from "./CurrentBtn/CurrentBtn";
@@ -57,14 +57,14 @@ let initLat, initLong;
 let initMapElement = null;
 let mapContainer = null;
 
-const Maps = forwardRef((props, ref) => {
+const Maps = (props) => {
     const [ loadingState, setLoadingState ] = useState(false);
     const script = document.createElement("script");
     const ncpClientId = props.ncpClientId;
     script.setAttribute("src", `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${ncpClientId}&submodules=geocoder`);
-    document.body.appendChild(script);    
+    document.body.appendChild(script);
+    mapContainer = useRef(null);
 
-    mapContainer = ref;   
     const initMap = async() => {
         mapContainer.current.innerHTML = null;
         const userCoords = await getUserCoords();
@@ -136,7 +136,7 @@ const Maps = forwardRef((props, ref) => {
             <CurrentBtn func1={()=>{currentLocationMap()}}/>
         </div>
     );
-});
+};
 
 const SearchLocationMap = (param1) => {
     const naverMapsObject = naverMapsObjectFunc();
@@ -174,7 +174,7 @@ const SearchLocationMap = (param1) => {
         map: initMapElement,
         position: new naverMapsObject.LatLng(locationsArray[i].x, locationsArray[i].y),
         icon: {
-            content: `<img src=${blueCircle} id=${i} class='blueCircle' draggable='false' unselectable='on'>`,
+            content: `<div id=${i} class='MarkerCircle' draggable='false' unselectable='on'>`,
             size: naverMapsObject.Size(35, 35),
             origin: naverMapsObject.Point(0, 0),
             anchor: naverMapsObject.Point(10,10) 

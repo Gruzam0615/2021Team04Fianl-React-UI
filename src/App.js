@@ -1,14 +1,13 @@
-import { useEffect, useState, useRef } from 'react';
+import { useRef } from 'react';
 
 import { Maps } from './Maps/Maps';
-import { Search } from './Maps/Search/Search';
+import { Search } from './Search/Search';
 
 import './App.css';
 
 function App() {
   const sideBar = useRef(null);
   const sideBtn = useRef(null);
-  const mapDiv = useRef(null);
 
   let sideBarState = false;
   const Test01 = () => {
@@ -29,7 +28,7 @@ function App() {
       <span> &#62; </span>
       </div>
       <Search ref={sideBar}/>
-      <Maps ref={mapDiv} ncpClientId="llyog7d8bs" />
+      <Maps ncpClientId="llyog7d8bs" />
     </div>
   );
 }
