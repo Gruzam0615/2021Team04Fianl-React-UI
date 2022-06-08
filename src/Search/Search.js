@@ -20,6 +20,7 @@ const Search = forwardRef((props, ref) => {
     const SearchFetch = (param) => {
         console.log(`${param} 에 대해 검색시작`);
         const url = `/v1/search/local.json?query=${param}&display=5&start=1`;
+        // const url = `/api/FindShop?title=${param}`;
         
         const CLIENT_ID = "kpYMnsoGe10W_S5naKs0";
         const CLIENT_SECRET = "YnxERGnITT";

@@ -1,3 +1,11 @@
+.NotSupport {
+  display: grid;
+  text-align: center;
+}
+.NotSupport > h1 {
+  padding-top: 45%;
+}
+
 .sideBarToggleBtn {
   top: 0;
   width: 30px;
@@ -20,41 +28,25 @@
   cursor: pointer;
 }
 
-/* .App {
-  text-align: center;
+.sideIcon1, .sideIcon2 {
+  width: 15px;
+  height: 2px;
+  margin: 12px 0px 0px 8px;
+  border-radius: 5px;
+  background-color: white;
+  transition: 0.5s;
+}
+.sideIcon1 {
+  transform: rotate(23deg);
+}
+.sideIcon2 {
+  margin-top: 3.5px;
+  transform: rotate(-23deg);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.change .sideIcon1 {
+  transform: rotate(-203deg);
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.change .sideIcon2 {
+  transform: rotate(203deg);
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */

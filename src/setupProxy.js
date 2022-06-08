@@ -22,4 +22,10 @@ module.exports = (app) => {
         })
     )
 
+    app.use(
+        createProxyMiddleware("/api/FindShop", {
+            target: "http://localhost:8080/",
+            changeOrigin: true
+        })
+    )
 }

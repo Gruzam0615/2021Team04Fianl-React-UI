@@ -1,11 +1,39 @@
 .LoadingPage {
+    position: absolute;
     width: 100%;
     height: 100vh;
     text-align: center;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 3;
+}
+
+#html-spinner{
+    position: absolute;
+    top: 45%;
+    left: 50.6%;
+
+    width:55px;
+    height:55px;
+    border:5px solid rgb(50, 50, 50);
+    border-top:5px solid white;
+    border-radius:50%;
+
+    transition-property: transform;
+    animation-name: rotate; 
+    animation-duration: 1.2s; 
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
 }
 
 .LoadingPage > h3 {
-    padding-top: 20%;
+    position: absolute;
+    top: 55%;
+    left: 50%;
     margin: 0;
+    color: white;
+}
+
+@keyframes rotate {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
 }

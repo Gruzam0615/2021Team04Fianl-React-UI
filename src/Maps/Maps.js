@@ -131,7 +131,7 @@ const Maps = (props) => {
     })
     return(       
         <div className="MapContianer">
-        {loadingState ? null : <LoadingPage/>}
+        {loadingState ? null: <LoadingPage/>}
             <div id={"map"} className="Map" ref={mapContainer}></div>
             <CurrentBtn func1={()=>{currentLocationMap()}}/>
         </div>
