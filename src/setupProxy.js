@@ -28,4 +28,14 @@ module.exports = (app) => {
             changeOrigin: true
         })
     )
+    
+    //2022.07 기준 바뀐 방식
+    /*
+    app.use("/api/FindShop",
+        createProxyMiddleware({
+            target: "http://localhost:8080/",
+            changeOrigin: true
+        })
+    )
+    */
 }
